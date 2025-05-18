@@ -1,0 +1,129 @@
+org: annni
+service: moovie-backend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-east-1
+  role: arn:aws:iam::058264353622:role/LabRole
+  environment:
+    MOVIES_TABLE: movie-data
+    USERS_TABLE: user-data
+
+functions:
+  receivedata:
+    handler: getdata.handler
+    events:
+      - http:
+          path: moviedata
+          method: get
+          cors: true
+      
+  getMovieById:
+    handler: getdata.moviebyId
+    events:
+      - http:
+          path: movies/{movie_id}
+          method: get
+          cors: true
+
+  updateLikes:
+    handler: getdata.likeupdate
+    events:
+      - http:
+          path: movies/{movie_id}/like
+          method: post
+          cors: true
+
+  searchmovie:
+    handler: getdata.searchmovie
+    events:
+      - http:
+          path: searchmovie
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                title: true
+        
+  filterfucntion:
+    handler: getdata.filterhandler
+    events:
+      - http:
+          path: collection
+          method: post
+          cors: true
+
+  signupfunction:
+    handler: getuser.signuphandler
+    events:
+      - http:
+          path: signup
+          method: post
+          cors: true
+    
+  signinfunction:
+    handler: getuser.loginhandler
+    events:
+      - http:
+          path: signin
+          method: post
+          cors: true 
+
+  logoutfunction:
+    handler: getuser.logouthandler
+    events:
+      - http:
+          path: logout
+          method: post
+          cors: true
+
+  usermefunction:
+    handler: getuser.userMeHandler
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true
+
+  profilefunction:
+    handler: getuser.profileHandler
+    events:
+      - http:
+          path: profile
+          method: get
+          cors: true
+
+  wishlisthandlerfunction:
+    handler: getuser.wishlisthandler
+    events:
+      - http:
+          path: wishlist
+          method: post
+          cors: true
+
+  paymentfunction:
+    handler: getpayment.createpaymenthandler
+    events:
+      - http:
+          path: order
+          method: post
+          cors: true
+
+  paymentverificationfunction:
+    handler: getpayment.verifypaymenthandler
+    events:
+      - http:
+          path: verifypay
+          method: post
+          cors: true
+    
+  contactformfunction:
+    handler: getuser.contactformhandler
+    events:
+      - http:
+          path: report
+          method: post
+          cors: true
